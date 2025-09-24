@@ -11,7 +11,6 @@
   <script>
     !function(window){
       const host = "https://labs.heygen.com";
-      // 改行(%0D%0A)をすべて除去した share トークンを直書き
       const shareToken = "eyJxdWFsaXR5IjoiaGlnaCIsImF2YXRhck5hbWUiOiI1OGU0NDVlZmM5ZDI0NDUzYmFlZWI5ZDg5ZjFiZmEwYiIsInByZXZpZXdJbWciOiJodHRwczovL2ZpbGVzMi5oZXlnZW4uYWkvYXZhdGFyL3YzLzU4ZTQ0NWVmYzlkMjQ0NTNiYWVlYjlkODlmMWJmYTBiL2Z1bGwvMi4yL3ByZXZpZXdfdGFyZ2V0LndlYnAiLCJuZWVkUmVtb3ZlQmFja2dyb3VuZCI6ZmFsc2UsImtub3dsZWRnZUJhc2VJZCI6IjJiYWNiNDNjZmNiZDRmYzU4NGY1NWE2NTYyNTgwYmE4IiwidXNlcm5hbWUiOiJjOTJkNDgwZTI3ZTg0N2NlODYxZTY5MjM4MTk3OTEyNiJ9";
 
       const url = host + "/guest/streaming-embed?share=" + encodeURIComponent(shareToken) + "&inIFrame=1";
@@ -54,6 +53,15 @@
         }
         #heygen-streaming-container { width: 100%; height: 100%; }
         #heygen-streaming-container iframe { width: 100%; height: 100%; border: 0; }
+
+        /* 🔽 フルスクリーンモード（任意で使える） */
+        #heygen-streaming-embed.fullscreen {
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border-radius: 0;
+        }
       `;
 
       const iframe = document.createElement("iframe");
@@ -66,7 +74,6 @@
       let visible = false, initial = false;
 
       window.addEventListener("message", (e) => {
-        // サブドメイン差異に備えて endsWith で判定
         if (!e.origin || !e.origin.endsWith("heygen.com")) return;
         if (!e.data || e.data.type !== "streaming-embed") return;
 
